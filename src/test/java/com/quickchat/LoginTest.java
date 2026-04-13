@@ -1,162 +1,178 @@
 package com.quickchat;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
+  
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 /**
- * Unit tests for the Login class.
- * Uses the exact test data specified in the PoE brief.
+ *
+ * @Mosetsanyana Margaret Manong
  */
 public class LoginTest {
-
-    private Login login;
-
-    /**
-     * Sets up a default registered user before each test.
-     * Uses the test data from the PoE brief where applicable.
-     */
-    @BeforeEach
-    public void setUp() {
-        // A fully valid user used for login tests
-        login = new Login("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
-    }
-
-    // ─────────────────────────────────────────────
-    // assertEquals Tests
-    // ─────────────────────────────────────────────
-
-    /** Username correctly formatted — should return the welcome string. */
-    @Test
-    public void testUsernameCorrectlyFormatted_ReturnsWelcomeMessage() {
-        login.setUsername("kyl_1");
-        login.setPassword("Ch&&sec@ke99!");
-        login.setCellPhoneNumber("+27838968976");
-        assertEquals(
-            "Registration successful! Welcome Kyle Smith.",
-            login.registerUser()
-        );
-    }
-
-    /** Username incorrectly formatted — should return the error message. */
-    @Test
-    public void testUsernameIncorrectlyFormatted_ReturnsErrorMessage() {
-        login.setUsername("kyle!!!!!!!");
-        assertEquals(
-            "Username is not correctly formatted; please ensure that your username " +
-            "contains an underscore and is no more than five characters in length.",
-            login.registerUser()
-        );
-    }
-
-    /** Password meets complexity requirements. */
-    @Test
-    public void testPasswordMeetsComplexity_ReturnsSuccess() {
-        login.setUsername("kyl_1");
-        login.setPassword("Ch&&sec@ke99!");
-        login.setCellPhoneNumber("+27838968976");
-        // registerUser only gets here after username passes; verify password message
-        // by checking checkPasswordComplexity independently:
-        assertTrue(login.checkPasswordComplexity(),
-            "Password 'Ch&&sec@ke99!' should meet complexity requirements.");
-    }
-
-    /** Password does not meet complexity requirements — returns error message. */
-    @Test
-    public void testPasswordDoesNotMeetComplexity_ReturnsErrorMessage() {
-        login.setUsername("kyl_1");
-        login.setPassword("password");
-        assertEquals(
-            "Password is not correctly formatted; please ensure that the password " +
-            "contains at least eight characters, a capital letter, a number, and a special character.",
-            login.registerUser()
-        );
-    }
-
-    /** Cell phone correctly formatted — returns success message. */
-    @Test
-    public void testCellPhoneCorrectlyFormatted_ReturnsSuccess() {
-        login.setCellPhoneNumber("+27838968976");
-        assertTrue(login.checkCellPhoneNumber(),
-            "Cell phone +27838968976 should be valid.");
-    }
-
     
-    /** Cell phone incorrectly formatted — returns error message. */
+//This is my login object that will be used for testing
+Login myLogin;
+
+//This method will runs before every single test
+//This will create a fresh login page each time
+
+@BeforeEach
+public void setUp(){
+    myLogin= new Login();
+    myLogin.FirstName="Kyle";
+    myLogin.LastName="Smith";
+    myLogin.username="kyl_1";
+    myLogin.password="Ch&&sec@ke99!";
+    myLogin.cellnumber="+27838968976";
+    
+}
+
+//Username Tests
+
+//Test 1 username is correct
+@Test
+public void testUsernameCorrect(){
+    myLogin.username="kyl_1";
+    assertEquals(
+    "Registration sucessful!, Welcome Kyle Smith",
+    myLogin.RegisterUser()
+    );
+    
+   
+    }
+ //Test 2 username is incorrect
+
+@Test
+public void testUsernameIncorrect() {
+    myLogin.username="Kyle!!!";
+    assertEquals(
+    "Username is not correctly not correctly formatted;please ensure that your username contains an underscore and is no more than five characters in length",
+    myLogin.RegisterUser()
+            );
+}
+//--Password tests
+//Test 3 - Password meets requirements
+@Test
+public void testPasswordCorrect(){
+    myLogin.password= "Ch&&sec@ke99!";
+    assertEquals(
+    "Password successfully captured",
+    myLogin.checkpasswordRequirements() == true ?
+            "Password successfully captured." : 
+            "Password is not correctly formatted; please ensure that the password contains at least eight characters, a capital letter, a number, and a special character."
+    );
+    
+}
+   //Test 4 password does not meet requirements
+@Test
+public void testPasswordIncorrect(){
+    myLogin.password= "password";
+    assertEquals(
+    "Password is not correctly formatted; please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.",
+    myLogin.checkpasswordRequirements() == true ?
+             "Password successfully captured." :
+            "Password is not correctly formatted; please ensure that the password contains at least eight characters, a capital letter, a number, and a special character."
+        );
+}
+//Test 5
+//cellnumber is correct
+public void testCellnumberCorrect() {
+    myLogin.cellnumber = "0658200398";
+    assertEquals(
+    "Cell number successfully captured.",
+    myLogin.checkcellphonenumber() == true ? 
+            "Cellphone number successfully captured." :
+            "Cell number is incorrectly formatted or does not contain an international code; please correct the number and try again."
+    );
+    
+}
+ // Test 6 - cell number is wrong
     @Test
-    public void testCellPhoneIncorrectlyFormatted_ReturnsError() {
-        login.setUsername("kyl_1");
-        login.setPassword("Ch&&sec@ke99!");
-        login.setCellPhoneNumber("08966553");
+    public void testCellNumberWrong() {
+        myLogin.cellnumber = "08966553";
         assertEquals(
-            "Cell phone number incorrectly formatted or does not contain international code.",
-            login.registerUser()
+            "Cell number is incorrectly formatted or does not contain an international code; please correct the number and try again.",
+            myLogin.checkcellphonenumber() == true ?
+            "Cell number successfully captured." :
+            "Cell number is incorrectly formatted or does not contain an international code; please correct the number and try again."
         );
     }
-
-    // ─────────────────────────────────────────────
-    // assertTrue / assertFalse Tests
-    // ─────────────────────────────────────────────
-
-    /** Login successful — loginUser() returns true. */
+    // ── LOGIN TESTS ──
+    
+    // Test 7 - login successful
     @Test
-    public void testLoginSuccessful_ReturnsTrue() {
-        assertTrue(login.loginUser("kyl_1", "Ch&&sec@ke99!"),
-            "Login with correct credentials should return true.");
+    public void testLoginSuccessful() {
+        assertTrue(myLogin.loginUser("kyl_1", "Ch&&sec@ke99!"));
     }
-
-    /** Login failed — loginUser() returns false. */
+    
+    // Test 8 - login failed
     @Test
-    public void testLoginFailed_ReturnsFalse() {
-        assertFalse(login.loginUser("wrong", "wrongPass1!"),
-            "Login with incorrect credentials should return false.");
+    public void testLoginFailed() {
+        assertFalse(myLogin.loginUser("wronguser", "wrongpass"));
     }
-
-    /** Username correctly formatted — checkUserName() returns true. */
+    
+   //assertTrue/assertFalse tests
+    
+    // Test 9 - username correctly formatted
     @Test
-    public void testCheckUserName_CorrectlyFormatted_ReturnsTrue() {
-        login.setUsername("kyl_1");
-        assertTrue(login.checkUserName(),
-            "Username 'kyl_1' should be valid.");
+    public void testUsernameCorrectlyFormatted() {
+        myLogin.username = "kyl_1";
+        assertTrue(myLogin.checkusername());
     }
-
-    /** Username incorrectly formatted — checkUserName() returns false. */
+    
+    // Test 10 - username incorrectly formatted
     @Test
-    public void testCheckUserName_IncorrectlyFormatted_ReturnsFalse() {
-        login.setUsername("kyle!!!!!!!");
-        assertFalse(login.checkUserName(),
-            "Username 'kyle!!!!!!!' should be invalid.");
+    public void testUsernameIncorrectlyFormatted() {
+        myLogin.username = "kyle!!!!";
+        assertFalse(myLogin.checkusername());
     }
-
-    /** Password meets complexity — checkPasswordComplexity() returns true. */
+    
+    // Test 11 - password meets requirements
     @Test
-    public void testCheckPasswordComplexity_MeetsRequirements_ReturnsTrue() {
-        login.setPassword("Ch&&sec@ke99!");
-        assertTrue(login.checkPasswordComplexity(),
-            "Password 'Ch&&sec@ke99!' should pass complexity check.");
+    public void testPasswordMeetsRequirements() {
+        myLogin.password = "Ch&&sec@ke99!";
+        assertTrue(myLogin.checkpasswordRequirements());
     }
-
-    /** Password does not meet complexity — checkPasswordComplexity() returns false. */
+    
+    // Test 12 - password does not meet requirements
     @Test
-    public void testCheckPasswordComplexity_DoesNotMeetRequirements_ReturnsFalse() {
-        login.setPassword("password");
-        assertFalse(login.checkPasswordComplexity(),
-            "Password 'password' should fail complexity check.");
+    public void testPasswordDoesNotMeetRequirements() {
+        myLogin.password = "password";
+        assertFalse(myLogin.checkpasswordRequirements());
     }
-
-    /** Cell phone correctly formatted — checkCellPhoneNumber() returns true. */
+    
+    // Test 13 - cell number correctly formatted
     @Test
-    public void testCheckCellPhoneNumber_CorrectlyFormatted_ReturnsTrue() {
-        login.setCellPhoneNumber("+27838968976");
-        assertTrue(login.checkCellPhoneNumber(),
-            "Cell +27838968976 should be valid.");
+    public void testCellNumberCorrectlyFormatted() {
+        myLogin.cellnumber = "+27658200398";
+        assertTrue(myLogin.checkcellphonenumber());
     }
-
-    /** Cell phone incorrectly formatted — checkCellPhoneNumber() returns false. */
+    
+    // Test 14 - cell number incorrectly formatted
     @Test
-    public void testCheckCellPhoneNumber_IncorrectlyFormatted_ReturnsFalse() {
-        login.setCellPhoneNumber("08966553");
-        assertFalse(login.checkCellPhoneNumber(),
-            "Cell 08966553 should be invalid (no international code, too short).");
+    public void testCellNumberIncorrectlyFormatted() {
+        myLogin.cellnumber = "08966553";
+        assertFalse(myLogin.checkcellphonenumber());
     }
+    
 }
+
+
+/*References:
+Baeldung, 2023. Guide to JUnit 5 [Online]. Available at: https://www.baeldung.com/junit-5 [Accessed: March 2026]
+GeeksforGeeks, 2023. How to write JSON object to file in Java [Online]. Available at: https://www.geeksforgeeks.org/how-to-write-json-object-to-file-in-java/ [Accessed: March 2026]
+Oracle, 2023. Java Documentation - Character class [Online]. Available at: https://docs.oracle.com/en/java/docs/api/java.base/java/lang/Character.html [Accessed: March 2026]
+Oracle, 2023. Java Documentation - String class [Online]. Available at: https://docs.oracle.com/en/java/docs/api/java.base/java/lang/String.html [Accessed: March 2026]
+QuickBlox, 2023. Beginners guide to chat app architecture [Online]. Available at: https://quickblox.com/blog/beginners-guide-to-chat-app-architecture/ [Accessed: March 2026]
+UIBakery, 2023. Regex library - Phone number [Online]. Available at: https://uibakery.io/regex-library/phone-number [Accessed: March 2026]
+
+YouTube Video References:
+Amigoscode, 2021. JUnit 5 Tutorial - Learn how to write unit tests [Online video]. Available at: https://www.youtube.com/watch?v=MOhiM2SXZl0 [Accessed: March 2026]
+Amigoscode, 2021. GitHub Actions - Automate your tests with Maven [Online video]. Available at: https://www.youtube.com/watch?v=oz0Qd5H4Onk [Accessed: March 2026]
+Kharkov, B., 2022. GitHub Desktop Tutorial - How to use GitHub Desktop [Online video]. Available at: https://www.youtube.com/watch?v=bUgFv1Y5LJw [Accessed: March 2026]
+
+
+*/
