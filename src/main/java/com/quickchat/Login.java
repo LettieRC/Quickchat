@@ -1,159 +1,160 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.quickchat;
 
 /**
- * Login class for QuickChat application.
- * Handles user registration and login functionality.
+ *
+ //Mosetsanyana_Margaret_Manong
  */
-public class Login {
 
-    private String username;
-    private String password;
-    private String cellPhoneNumber;
-    private String firstName;
-    private String lastName;
+public class Login{
+    
+    
+    //My variables for logging in
+    //All strings
+    String username;
+    String password;
+    String FirstName;
+    String LastName;
+    String cellnumber;
+    
+    //Next I'm going to create a method
+    //Boolean for checking whether a condition is true or false
+    public boolean checkusername() {
+        
+//This will check whether it matches my conditions for signing in
+//The first condition it should check if username has an underscore
+       if(username.contains("_") && username.length() <= 5) { 
+           return true;
+       }
+       else {
+           return false;
+       }
 
-    // ─────────────────────────────────────────────
-    // Constructors
-    // ─────────────────────────────────────────────
-
-    public Login() {}
-
-    public Login(String firstName, String lastName, String username, String password, String cellPhoneNumber) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
-        this.cellPhoneNumber = cellPhoneNumber;
-    }
-
-    // ─────────────────────────────────────────────
-    // Getters and Setters
-    // ─────────────────────────────────────────────
-
-    public String getUsername()                     { return username; }
-    public void   setUsername(String username)      { this.username = username; }
-
-    public String getPassword()                     { return password; }
-    public void   setPassword(String password)      { this.password = password; }
-
-    public String getCellPhoneNumber()              { return cellPhoneNumber; }
-    public void   setCellPhoneNumber(String cell)   { this.cellPhoneNumber = cell; }
-
-    public String getFirstName()                    { return firstName; }
-    public void   setFirstName(String firstName)    { this.firstName = firstName; }
-
-    public String getLastName()                     { return lastName; }
-    public void   setLastName(String lastName)      { this.lastName = lastName; }
-
-    // ─────────────────────────────────────────────
-    // Validation Methods
-    // ─────────────────────────────────────────────
-
-    /**
-     * Checks that the username contains an underscore
-     * and is no more than five characters long.
-     *
-     * @return true if the username is valid, false otherwise.
-     */
-    public boolean checkUserName() {
-        if (username == null) return false;
-        return username.contains("_") && username.length() <= 5;
-    }
-
-    /**
-     * Checks that the password meets complexity requirements:
-     * - At least 8 characters long
-     * - Contains at least one capital letter
-     * - Contains at least one digit
-     * - Contains at least one special character
-     *
-     * @return true if the password is valid, false otherwise.
-     */
-    public boolean checkPasswordComplexity() {
-        if (password == null || password.length() < 8) return false;
-
-        boolean hasUpper   = password.chars().anyMatch(Character::isUpperCase);
-        boolean hasDigit   = password.chars().anyMatch(Character::isDigit);
-        boolean hasSpecial = password.chars().anyMatch(c ->
-                "!@#$%^&*()_+-=[]{}|;':\",./<>?".indexOf(c) >= 0);
-
-        return hasUpper && hasDigit && hasSpecial;
-    }
-
-    /**
-     * Validates a South African cell phone number using a regular expression.
-     * The number must start with the international country code (+27)
-     * followed by exactly 9 digits (total: 12 characters including the +).
-     *
-     * Regex reference:
-     * Adapted from:https://uibakery.io/regex-library/phone-number
-     * Pattern: ^\+[0-9]{1,3}[0-9]{9,10}$
-     * - ^\+        : must start with a '+' sign (international code indicator)
-     * - [0-9]{1,3} : 1–3 digit country code (e.g. 27 for South Africa)
-     * - [0-9]{9,10}: 9–10 digit local number
-     * - $          : end of string
-     *
-     * @return true if the cell phone number is correctly formatted, false otherwise.
-     */
-    public boolean checkCellPhoneNumber() {
-        if (cellPhoneNumber == null) return false;
-        String regex = "^\\+[0-9]{1,3}[0-9]{9,10}$";
-        return cellPhoneNumber.matches(regex);
-    }
-
-    // ─────────────────────────────────────────────
-    // Registration & Login Methods
-    // ─────────────────────────────────────────────
-
-    /**
-     * Attempts to register the user by validating username, password,
-     * and cell phone number in sequence.
-     *
-     * @return a status message describing the result of registration.
-     */
-    public String registerUser() {
-        if (!checkUserName()) {
-            return "Username is not correctly formatted; please ensure that your username " +
-                   "contains an underscore and is no more than five characters in length.";
+   }
+    public boolean checkpasswordRequirements() {
+        //Boolean for checking password requirements
+        
+        //Will check password lentght
+        if(password.length() <8) {
+            return false;
         }
-        if (!checkPasswordComplexity()) {
-            return "Password is not correctly formatted; please ensure that the password " +
-                   "contains at least eight characters, a capital letter, a number, and a special character.";
+        //This will check if password complies
+        boolean hasCapital=false;
+        boolean hasNumber=false;
+        boolean hasSpecial=false;
+        
+        //incrementation
+        for ( int i=0;  i < password.length(); i++) {
+            //char means characters
+            char c = password.charAt(i);
+             
+            if(Character.isUpperCase(c)) {
+                hasCapital = true;
+            }
+            if (Character.isDigit(c)) {
+                hasNumber=true;
+            }
+            if(!Character.isLetterOrDigit(c)){
+                hasSpecial = true;
+            }
         }
-        if (!checkCellPhoneNumber()) {
-            return "Cell phone number incorrectly formatted or does not contain international code.";
+        
+        if (hasCapital && hasNumber && hasSpecial) {
+            return true;
         }
-        return "Registration successful! Welcome " + firstName + " " + lastName + ".";
-    }
+        else {
+            return false;
+        }
+        
+        }
+    
+    
+    //Next I'm gonna create a method using Boolean
+//it will check if it will start wiht an international code
 
-    /**
-     * Verifies that the provided credentials match the stored credentials.
-     *
-     * @param enteredUsername the username entered at login.
-     * @param enteredPassword the password entered at login.
-     * @return true if both username and password match, false otherwise.
-     */
-    public boolean loginUser(String enteredUsername, String enteredPassword) {
-        if (enteredUsername == null || enteredPassword == null) return false;
-        return enteredUsername.equals(this.username) && enteredPassword.equals(this.password);
+//This will check if the number is valid
+public boolean checkcellphonenumber(){
+    String pattern = "^\\+[0-9]{1,3}[0-9]{9,10}$";
+    
+    //This will check if the number follows the pattern
+    //It will act like a boolean value returning true or flase
+    if (cellnumber.matches(pattern)) {
+        return true;
+        
     }
-
-    /**
-     * Returns a login status message based on whether the provided
-     * credentials are correct.
-     *
-     * @param enteredUsername the username entered at login.
-     * @param enteredPassword the password entered at login.
-     * @return a welcome message on success, or an error message on failure.
-     */
-    public String returnLoginStatus(String enteredUsername, String enteredPassword) {
-        if (loginUser(enteredUsername, enteredPassword)) {
-            return "Welcome " + firstName + ", " + lastName + " it is great to see you again.";
-        }
-        return "Username or password incorrect, please try again.";
+    else {
+        return false;
+        
     }
 }
 
+public String RegisterUser(){
+    
+    //it checks the username
+    if (checkusername() ==false) {
+        
+        return "Username is not correctly formatted,please ensure that your username contains an underscore and is no more than five characters in length.\"" ;
+    } 
+    //Next check the password
+    
+   if (checkpasswordRequirements() == false) {
+       
+       return "\"Password is not correctly formatted; please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.\";" ;
+   }
+  
+   if(checkcellphonenumber() == false) {
+       return "\"Cellphone number incorrectly formatted or doesn't contain international code.";
+}
+   //If All conditions meet 
+   return "Registration successful! Welcome " + FirstName + " " + LastName + ". " ;
+   }
+
+//The boolean method contains variables
+//enteredUsername variable have stored the username
+//EnteredPassword variable have stored the password
+
+public boolean loginUser(String enteredUsername, String EnteredPassword) {
+
+//This will check if the entered username and password match what was saved
+if (enteredUsername.equals(username) && EnteredPassword.equals(password)) {
+    return true;
+}
+else {
+    return false;
+}
+}
+    //This method will return a result based on the login result
+  public String returnLoginStatus(String enteredUsername, String EnteredPassword) {
+        
+        //this will validate if the entered details or credentials are correct
+        if (loginUser(enteredUsername, EnteredPassword) == true ) {
+            return "Welcome " + FirstName + " , " + LastName  + " it is great to see you again." ;
+        } 
+        else {
+            return "Username or Password incorrect,Please try again";
+        }
+    }
+}
+    
+/*References:
+Baeldung, 2023. Guide to JUnit 5 [Online]. Available at: https://www.baeldung.com/junit-5 [Accessed: March 2026]
+GeeksforGeeks, 2023. How to write JSON object to file in Java [Online]. Available at: https://www.geeksforgeeks.org/how-to-write-json-object-to-file-in-java/ [Accessed: March 2026]
+Oracle, 2023. Java Documentation - Character class [Online]. Available at: https://docs.oracle.com/en/java/docs/api/java.base/java/lang/Character.html [Accessed: March 2026]
+Oracle, 2023. Java Documentation - String class [Online]. Available at: https://docs.oracle.com/en/java/docs/api/java.base/java/lang/String.html [Accessed: March 2026]
+QuickBlox, 2023. Beginners guide to chat app architecture [Online]. Available at: https://quickblox.com/blog/beginners-guide-to-chat-app-architecture/ [Accessed: March 2026]
+UIBakery, 2023. Regex library - Phone number [Online]. Available at: https://uibakery.io/regex-library/phone-number [Accessed: March 2026]
+
+YouTube Video References:
+Amigoscode, 2021. JUnit 5 Tutorial - Learn how to write unit tests [Online video]. Available at: https://www.youtube.com/watch?v=MOhiM2SXZl0 [Accessed: March 2026]
+Amigoscode, 2021. GitHub Actions - Automate your tests with Maven [Online video]. Available at: https://www.youtube.com/watch?v=oz0Qd5H4Onk [Accessed: March 2026]
+Kharkov, B., 2022. GitHub Desktop Tutorial - How to use GitHub Desktop [Online video]. Available at: https://www.youtube.com/watch?v=bUgFv1Y5LJw [Accessed: March 2026]
+
+*/
 
 
+  
+    
 
